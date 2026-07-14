@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react';
 
-export function useTypingText(words, typingSpeed = 95, pause = 1400) {
+export function useTypingText(
+  words: readonly string[],
+  typingSpeed = 95,
+  pause = 1400,
+): string {
   const [wordIndex, setWordIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    if (!words.length) {
-      return undefined;
-    }
+    if (!words.length) return undefined;
 
     const currentWord = words[wordIndex % words.length];
     const isWordComplete = displayText === currentWord;
     const isWordEmpty = displayText === '';
 
-    const timeout = setTimeout(
+    const timeout = window.setTimeout(
       () => {
         if (!isDeleting && isWordComplete) {
           setIsDeleting(true);
@@ -36,7 +38,7 @@ export function useTypingText(words, typingSpeed = 95, pause = 1400) {
       !isDeleting && isWordComplete ? pause : isDeleting ? typingSpeed / 2 : typingSpeed,
     );
 
-    return () => clearTimeout(timeout);
+    return () => window.clearTimeout(timeout);
   }, [displayText, isDeleting, pause, typingSpeed, wordIndex, words]);
 
   return displayText;

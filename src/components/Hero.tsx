@@ -1,28 +1,42 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
+import type { SocialLabel, SocialLink } from '../data/siteContent';
 import { useTypingText } from '../hooks/useTypingText';
 
-function Hero({ typingWords, socialLinks }) {
+interface HeroProps {
+  typingWords: readonly string[];
+  socialLinks: SocialLink[];
+}
+
+type BrandColorStyle = CSSProperties & { '--brand-color': string };
+
+const brandColors: Record<SocialLabel, string> = {
+  'E-mail': '#4084F4',
+  Instagram: '#e4405f',
+  LinkedIn: '#0077b5',
+  GitHub: '#f0f6fc',
+};
+
+function Hero({ typingWords, socialLinks }: HeroProps) {
   const typedText = useTypingText(typingWords);
   const [isLight, setIsLight] = useState(false);
-  const brandColors = {
-    'E-mail': '#4084F4',
-    Instagram: '#e4405f',
-    LinkedIn: '#0077b5',
-    GitHub: '#f0f6fc',
-  };
 
   return (
     <main className={`site-shell particle-field flex min-h-[100svh] items-center justify-center px-5 py-12 ${isLight ? 'theme-light' : 'theme-dark'}`}>
       <div className="particles" aria-hidden="true">
         {Array.from({ length: 28 }, (_, index) => <span key={index} />)}
       </div>
+
       <section className="relative z-10 flex w-full max-w-7xl flex-col items-center text-center">
-        <p className="select-none min-h-6 text-xs font-bold uppercase tracking-[0.3em] sm:text-sm">
+        <p className="min-h-6 select-none text-xs font-bold uppercase tracking-[0.3em] sm:text-sm">
           {typedText}<span className="ml-1 animate-pulse">_</span>
         </p>
 
-        <h1 className="name-display mt-9 select-none text-[clamp(3.4rem,11.5vw,10.5rem)] leading-[0.9] tracking-[-0.06em]" data-text="SUNDEEP" aria-label="Sundeep">
+        <h1
+          className="name-display mt-9 select-none text-[clamp(3.4rem,11.5vw,10.5rem)] leading-[0.9] tracking-[-0.06em]"
+          data-text="SUNDEEP"
+          aria-label="Sundeep"
+        >
           SUNDEEP
         </h1>
 
@@ -46,7 +60,7 @@ function Hero({ typingWords, socialLinks }) {
               rel="noreferrer"
               aria-label={socialLink.label}
               title={socialLink.label}
-              style={{ '--brand-color': brandColors[socialLink.label] }}
+              style={{ '--brand-color': brandColors[socialLink.label] } as BrandColorStyle}
               className={`social-link ${socialLink.label === 'Instagram' ? 'instagram-link' : ''} text-xl transition duration-200 hover:-translate-y-1 sm:text-2xl`}
             >
               <FontAwesomeIcon icon={socialLink.icon} />
@@ -64,7 +78,7 @@ function Hero({ typingWords, socialLinks }) {
             className="inline-flex items-center gap-2 rounded-full border border-current px-4 py-2 font-semibold opacity-80 transition hover:-translate-y-1 hover:opacity-100"
           >
             <img
-              src="https://storage.ko-fi.com/cdn/brandasset/v2/kofi_symbol.png?_gl=1*kyz7wr*_gcl_au*MTM3MTQzMzQzNy4xNzgzOTA4NDc3*_ga*MjA1NjU2NzkyNC4xNzgzOTA4NDc3*_ga_M13FZ7VQ2C*czE3ODM5MDg0NzckbzEkZzEkdDE3ODM5MDk1OTIkajU3JGwwJGgw"
+              src="https://storage.ko-fi.com/cdn/brandasset/v2/kofi_symbol.png"
               alt=""
               className="h-5 w-5 object-contain"
             />
